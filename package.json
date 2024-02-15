@@ -1,0 +1,27 @@
+{
+  "name": "chainable-simple-validator",
+  "version": "1.0.0",
+  "description": "A chain-able validator, ideal for using to validate any field, form-data or body of node-js api route",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smShakil/chainable-simple-validator.git"
+  },
+  "keywords": [
+    "validator",
+    "field-validator",
+    "value-validator",
+    "data-validator",
+    "chainable-validator",
+    "chain-able"
+  ],
+  "author": "SM Shakil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smShakil/chainable-simple-validator/issues"
+  },
+  "homepage": "https://github.com/smShakil/chainable-simple-validator#readme"
+}
