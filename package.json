@@ -16,7 +16,9 @@
     "value-validator",
     "data-validator",
     "chainable-validator",
-    "chain-able"
+    "chainable",
+    "type-check",
+    "error"
   ],
   "author": "SM Shakil",
   "license": "MIT",
