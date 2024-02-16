@@ -72,22 +72,22 @@ const { value: termsConditions, errors: tcErrors } = validator(body.termsConditi
 
 ### Methods
 
-| Methods   |                                                                                               Description                                                                                               |
-| --------- | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| validator |                                                             The main contructor method which accepts an argument of any valid js data type.                                                             |
+| Methods   | Description                                                                                                                                                                                             |
+| :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| validator | The main contructor method which accepts an argument of any valid js data type.                                                                                                                         |
 | nullable  | Only if the value is NOT `null` or `undefind`, validators will be applicable. Apply it if the value is optional. Notice the position above, it's important. Always apply it as second method if needed. |
-| type      |                                                                                  It can check any valid JS data type.                                                                                   |
-| min       |                                                                          Checks if the value has satisfied the minimum length.                                                                          |
-| max       |                                                                    Checks whether the value has exceeded the maximum length or not.                                                                     |
-| exact     |                                                                      Checks whether the value has matched the exact length or not.                                                                      |
+| type      | It can check any valid JS data type.                                                                                                                                                                    |
+| min       | Checks if the value has satisfied the minimum length.                                                                                                                                                   |
+| max       | Checks whether the value has exceeded the maximum length or not.                                                                                                                                        |
+| exact     | Checks whether the value has matched the exact length or not.                                                                                                                                           |
 
 ### Responses
 
 Response is returned as an object which includes the followings:
 
-| Responses |                    Description                     |
-| --------- | :------------------------------------------------: |
-| value     |      The `value` passed to validator method.       |
+| Responses | Description                                        |
+| :-------- | :------------------------------------------------- |
+| value     | The `value` passed to validator method.            |
 | errors    | Errors are retured as an array. See below example. |
 
 #### Error example
