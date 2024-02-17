@@ -33,53 +33,63 @@ import validator from "chainable-simple-validator";
 const { value, errors } = validator("First Name").type("string");
 
 // Type checking & when we need exact length
-const { value, errors } = validator("01234567890").type("string").exact(11);
+const { value, errors } = validator(01234567890).type("number").exact(11);
 
 // With minimum & maximum boundary
-const { value, errors } = validator("password").type("string").min(6).max(10);
+const { value, errors } = validator([1, 2, 3]).type("array").min(3).max(6);
 
 // If it's optional
 const { value, errors } = validator(true).nullable().type("boolean");
+
+// If it's an email
+const { value, errors } = validator(true).type("string").isEmail();
 ```
 
 #### Full example
 
 ```js
 const body = {
-  firstName: 'Jhon',
-  lastName: 'Smith',
+  name: 'Jhon Smith',
+  email: 'john@smith.com',
   phone: '01234567890',
-  password: '123456',
-  termsConditions: true
+  password: 'j123456s',
+  termsConditions: true,
+  profile: 'www.john-smith.com'
 }
 
-const { value: firstName, errors: fErrors } = validator(body.firstName).type('string')
-const { value: lastName, errors: lErrors } = validator(body.lastName).nullable().type('string')
+const { value: name, errors: nErrors } = validator(body.name).type('string')
+const { value: email, errors: mailErrors } = validator(body.email).isEmail()
 const { value: phone, errors: pErrors } = validator(body.phone).type('string').exact(11)
-const { value: password, errors: passErrors } = validator(body.password).type('string').min(6).max(10)
-const { value: termsConditions, errors: tcErrors } = validator(body.termsConditions).type('boolean')
+const { value: password, errors: passErrors } = validator(body.password).type('string').min(6).max(10).isAlphaNumeric()
+const { value: tc, errors: tcErrors } = validator(body.termsConditions).nullable().type('boolean')
+const { value: profile, errors: proErrors } = validator(body.profile).nullable().isURL()
 
-  if ([fErrors, lErrors, pErrors, passErrors, tcErrors].some((err) => err.length)) {
+  if ([nErrors, mailErrors, pErrors, passErrors, tcErrors, proErrors].some((err) => err.length)) {
     console.log(error: {
         firstName: fErrors,
-        lastName: lErrors,
+        email: mailErrors,
         phone: pErrors,
         password: passErrors,
         termsConditions: tcErrors,
+        profile: proErrors,
       })
   }
 ```
 
 ### Methods
 
-| Methods   | Description                                                                                                                                                                                             |
-| :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| validator | The main contructor method which accepts an argument of any valid js data type.                                                                                                                         |
-| nullable  | Only if the value is NOT `null` or `undefind`, validators will be applicable. Apply it if the value is optional. Notice the position above, it's important. Always apply it as second method if needed. |
-| type      | It can check any valid JS data type.                                                                                                                                                                    |
-| min       | Checks if the value has satisfied the minimum length.                                                                                                                                                   |
-| max       | Checks whether the value has exceeded the maximum length or not.                                                                                                                                        |
-| exact     | Checks whether the value has matched the exact length or not.                                                                                                                                           |
+| Methods                            | Description                                                                                                                                                                                             |
+| :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| validator                          | The main contructor method which accepts an argument of any valid js data type.                                                                                                                         |
+| nullable                           | Only if the value is NOT `null` or `undefind`, validators will be applicable. Apply it if the value is optional. Notice the position above, it's important. Always apply it as second method if needed. |
+| type                               | It can check any valid JS data type including `Array` & `Object`.                                                                                                                                       |
+| min                                | Checks if the value has satisfied the minimum length.                                                                                                                                                   |
+| max                                | Checks whether the value has exceeded the maximum length or not.                                                                                                                                        |
+| exact                              | Checks whether the value has matched the exact length or not.                                                                                                                                           |
+| isEmail                            | Checks whether it's a valid email or not.                                                                                                                                                               |
+| isAlphaNumeric                     | Checks if the value contains only alpha-numeric characters.                                                                                                                                             |
+| isAlphaNumericWithHyphenUnderscore | Checks if the value contains only alpha-numeric characters, hyphen & underscore.                                                                                                                        |
+| isURL                              | Checks whether it's a valid URL or not.                                                                                                                                                                 |
 
 ### Responses
 
@@ -98,6 +108,8 @@ Response is returned as an object which includes the followings:
   "Max length must not exceed 10",
   "Min length must be 6",
   "Length must be 11",
+  "This only accepts alpha-numeric value with hyphen & underscore",
+  "This is not valid URL",
 ];
 ```
 
