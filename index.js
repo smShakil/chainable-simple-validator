@@ -6,6 +6,36 @@
  * Date: 07/02/2024
  */
 
+const checkLength = (el) => {
+  let length = 0
+  switch(true) {
+    case !el:
+    case typeof el === 'boolean':
+    case typeof el === 'symbol':
+      length = 0
+      break
+
+    case typeof el === 'string':
+    case Array.isArray(el):
+      length = el.length
+      break
+
+    case typeof el === 'object':
+      length = Object.keys(el).length
+      break
+    
+    case typeof el === 'number':
+    case typeof el === 'bigint':
+      length = `${el}`.length
+      break
+
+    default:
+      length = 0
+  }
+
+  return length
+}
+
 const validator = (el) => {
   const actions = {}
   actions.value = el ?? null
@@ -28,7 +58,7 @@ const validator = (el) => {
   }
   actions.max = (max) => {
     if (isNullable && actions.value === null) return actions
-    if (el.length <= max) return actions
+    if (checkLength(el) <= max) return actions
     else {
       actions.errors.push(`Max length must not exceed ${max}`)
       return actions
@@ -36,7 +66,7 @@ const validator = (el) => {
   }
   actions.min = (min) => {
     if (isNullable && actions.value === null) return actions
-    if (el.length >= min) return actions
+    if (checkLength(el) >= min) return actions
     else {
       actions.errors.push(`Min length must be ${min}`)
       return actions
@@ -44,7 +74,7 @@ const validator = (el) => {
   }
   actions.exact = (exact) => {
     if (isNullable && actions.value === null) return actions
-    if (el.length == exact) return actions
+    if (checkLength(el) == exact) return actions
     else {
       actions.errors.push(`Length must be ${exact}`)
       return actions
