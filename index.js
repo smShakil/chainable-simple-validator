@@ -16,9 +16,11 @@ const validator = (el) => {
     isNullable = nullable
     return actions
   }
-  actions.type = (type) => {
+  actions.type = (expectedType) => {
     if (isNullable && actions.value === null) return actions
+    const type = expectedType.toLowerCase()
     if (typeof el === type) return actions
+    else if (type === 'array' && Array.isArray(el)) return actions
     else {
       actions.errors.push(`Type not matched. Expected ${type}, got ${typeof el}`)
       return actions
