@@ -6,6 +6,9 @@
  * Date: 07/02/2024
  */
 
+// Dependencies
+const {email, alphaNum, alphaNumWithHyphenUnderscore, URL} = require('./validatorRegex')
+
 const checkLength = (el) => {
   let length = 0
   switch(true) {
@@ -79,6 +82,38 @@ const validator = (el) => {
       actions.errors.push(`Length must be ${exact}`)
       return actions
     }
+  }
+  actions.isEmail = () => {
+    if (isNullable && actions.value === null) return actions
+    if (email.test(el)) return actions
+    else {
+      actions.errors.push(`This is not a valid email`)
+      return actions
+    } 
+  }
+  actions.isAlphaNumeric = () => {
+    if (isNullable && actions.value === null) return actions
+    if (alphaNum.test(el)) return actions
+    else {
+      actions.errors.push(`This only accepts alpha-numeric value`)
+      return actions
+    } 
+  }
+  actions.isAlphaNumericWithHyphenUnderscore = () => {
+    if (isNullable && actions.value === null) return actions
+    if (alphaNumWithHyphenUnderscore.test(el)) return actions
+    else {
+      actions.errors.push(`This only accepts alpha-numeric value with hyphen & underscore`)
+      return actions
+    } 
+  }
+  actions.isURL = () => {
+    if (isNullable && actions.value === null) return actions
+    if (URL.test(el)) return actions
+    else {
+      actions.errors.push(`This is not valid URL`)
+      return actions
+    } 
   }
 
   return actions
