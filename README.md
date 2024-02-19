@@ -68,16 +68,16 @@ const { value: email, errors: mailErrors } = validator(body.email).isEmail()
 const { value: password, errors: passErrors } = validator(body.password).type('string').min(6).max(10).isAlphaNumeric()
 const { value: tc, errors: tcErrors } = validator(body.termsConditions).nullable().type('boolean')
 const { value: profile, errors: proErrors } = validator(body.profile).nullable().isURL()
-const { value: phone, errors: pErrors } = validator(body.method).custom(customValidator) // See below example
+const { value: method, errors: mErrors } = validator(body.method).custom(customValidator) // See below example
 
   if ([nErrors, mailErrors, pErrors, passErrors, tcErrors, proErrors].some((err) => err.length)) {
     console.log(error: {
         firstName: fErrors,
         email: mailErrors,
-        phone: pErrors,
         password: passErrors,
         termsConditions: tcErrors,
         profile: proErrors,
+        method: mErrors,
       })
   }
 ```
