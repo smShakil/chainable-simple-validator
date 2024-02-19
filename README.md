@@ -45,10 +45,9 @@ const { value, errors } = validator(true).nullable().type("boolean");
 const { value, errors } = validator(true).type("string").isEmail();
 
 // Or, pass a custom validator
-const { value, errors } = validator(2).custom(
-  (el) => [1, 2, 3].includes(el),
-  "Item not found"
-);
+const { value, errors } = validator(2)
+  .type("number")
+  .custom((el) => el % 1 === 0, "Must be a whole number");
 ```
 
 #### Full example
@@ -86,7 +85,8 @@ const { value: method, errors: mErrors } = validator(body.method).custom(customV
 
 ```js
 const methods = ['get', 'post', 'put', 'delete']
-const customValidator (el) => methods.includes(el) // This must return boolean
+const customValidator (el) => methods.includes(el.toLowerCase()) // This must return boolean
+const { errors } = validator('GET').custom(customValidator)
 ```
 
 ### Methods
