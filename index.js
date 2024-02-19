@@ -89,7 +89,7 @@ const validator = (el) => {
     else {
       actions.errors.push(`This is not a valid email`)
       return actions
-    } 
+    }
   }
   actions.isAlphaNumeric = () => {
     if (isNullable && actions.value === null) return actions
@@ -97,7 +97,7 @@ const validator = (el) => {
     else {
       actions.errors.push(`This only accepts alpha-numeric value`)
       return actions
-    } 
+    }
   }
   actions.isAlphaNumericWithHyphenUnderscore = () => {
     if (isNullable && actions.value === null) return actions
@@ -105,7 +105,7 @@ const validator = (el) => {
     else {
       actions.errors.push(`This only accepts alpha-numeric value with hyphen & underscore`)
       return actions
-    } 
+    }
   }
   actions.isURL = () => {
     if (isNullable && actions.value === null) return actions
@@ -113,7 +113,15 @@ const validator = (el) => {
     else {
       actions.errors.push(`This is not valid URL`)
       return actions
-    } 
+    }
+  }
+  actions.custom = (handler = () => false, errorMsg = 'Not a valid input') => {
+    if (isNullable && actions.value === null) return actions
+    if (handler(el)) return actions
+    else {
+      if (typeof errorMsg === 'string') actions.errors.push(errorMsg)
+      return actions
+    }
   }
 
   return actions

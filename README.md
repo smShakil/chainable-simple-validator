@@ -43,6 +43,12 @@ const { value, errors } = validator(true).nullable().type("boolean");
 
 // If it's an email
 const { value, errors } = validator(true).type("string").isEmail();
+
+// Or, pass a custom validator
+const { value, errors } = validator(2).custom(
+  (el) => [1, 2, 3].includes(el),
+  "Item not found"
+);
 ```
 
 #### Full example
@@ -51,18 +57,18 @@ const { value, errors } = validator(true).type("string").isEmail();
 const body = {
   name: 'Jhon Smith',
   email: 'john@smith.com',
-  phone: '01234567890',
   password: 'j123456s',
   termsConditions: true,
-  profile: 'www.john-smith.com'
+  profile: 'www.john-smith.com',
+  method: 'get'
 }
 
 const { value: name, errors: nErrors } = validator(body.name).type('string')
 const { value: email, errors: mailErrors } = validator(body.email).isEmail()
-const { value: phone, errors: pErrors } = validator(body.phone).type('string').exact(11)
 const { value: password, errors: passErrors } = validator(body.password).type('string').min(6).max(10).isAlphaNumeric()
 const { value: tc, errors: tcErrors } = validator(body.termsConditions).nullable().type('boolean')
 const { value: profile, errors: proErrors } = validator(body.profile).nullable().isURL()
+const { value: phone, errors: pErrors } = validator(body.method).custom(customValidator) // See below example
 
   if ([nErrors, mailErrors, pErrors, passErrors, tcErrors, proErrors].some((err) => err.length)) {
     console.log(error: {
@@ -76,20 +82,28 @@ const { value: profile, errors: proErrors } = validator(body.profile).nullable()
   }
 ```
 
+#### Custom Method example
+
+```js
+const methods = ['get', 'post', 'put', 'delete']
+const customValidator (el) => methods.includes(el) // This must return boolean
+```
+
 ### Methods
 
-| Methods                            | Description                                                                                                                                                                                             |
-| :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| validator                          | The main contructor method which accepts an argument of any valid js data type.                                                                                                                         |
-| nullable                           | Only if the value is NOT `null` or `undefind`, validators will be applicable. Apply it if the value is optional. Notice the position above, it's important. Always apply it as second method if needed. |
-| type                               | It can check any valid JS data type including `Array` & `Object`.                                                                                                                                       |
-| min                                | Checks if the value has satisfied the minimum length.                                                                                                                                                   |
-| max                                | Checks whether the value has exceeded the maximum length or not.                                                                                                                                        |
-| exact                              | Checks whether the value has matched the exact length or not.                                                                                                                                           |
-| isEmail                            | Checks whether it's a valid email or not.                                                                                                                                                               |
-| isAlphaNumeric                     | Checks if the value contains only alpha-numeric characters.                                                                                                                                             |
-| isAlphaNumericWithHyphenUnderscore | Checks if the value contains only alpha-numeric characters, hyphen & underscore.                                                                                                                        |
-| isURL                              | Checks whether it's a valid URL or not.                                                                                                                                                                 |
+| Methods                            | Description                                                                                                                                                                                                                                               |
+| :--------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| validator                          | The main contructor method which accepts an argument of any valid js data type.                                                                                                                                                                           |
+| nullable                           | Only if the value is NOT `null` or `undefind`, validators will be applicable. Apply it if the value is optional. Notice the position above, it's important. Always apply it as second method if needed.                                                   |
+| type                               | It can check any valid JS data type including `Array` & `Object`.                                                                                                                                                                                         |
+| min                                | Checks if the value has satisfied the minimum length.                                                                                                                                                                                                     |
+| max                                | Checks whether the value has exceeded the maximum length or not.                                                                                                                                                                                          |
+| exact                              | Checks whether the value has matched the exact length or not.                                                                                                                                                                                             |
+| isEmail                            | Checks whether it's a valid email or not.                                                                                                                                                                                                                 |
+| isAlphaNumeric                     | Checks if the value contains only alpha-numeric characters.                                                                                                                                                                                               |
+| isAlphaNumericWithHyphenUnderscore | Checks if the value contains only alpha-numeric characters, hyphen & underscore.                                                                                                                                                                          |
+| isURL                              | Checks whether it's a valid URL or not.                                                                                                                                                                                                                   |
+| custom                             | It is also possible to pass your own validator if needed. This method accepts a `handler` as first argument & a string (optional) as second argument which will be returned in `errors` array if the logic not meet. The `handler` must return a boolean. |
 
 ### Responses
 
